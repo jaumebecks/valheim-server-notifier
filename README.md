@@ -109,26 +109,96 @@ To get a local copy up and running follow these simple steps.
 
 First, we'll get the code
 
+#### Get the code
+
+In your Valheim Server
+
 1. Clone the repo
 
-   ```sh
-   git clone https://github.com/jaumebecks/valheim-server-notifier.git
-   ```
+  ```sh
+  git clone https://github.com/jaumebecks/valheim-server-notifier.git
+  ```
 
 2. Go into project root
 
-   ```sh
-   cd valheim-server-notifier
-   ```
+  ```sh
+  cd valheim-server-notifier
+  ```
 
-3. Run Odin script
+3. Update .env file
 
-   ```sh
-   python3 odin/main.py
-   ```
+  ```sh
+  cp .env.dist .env
+  ```
 
-   > Remember to set the envvars as mentioned above beforehand
+4. Open `.env` file and fill it with proper values
 
+
+#### Run script automatically on server start
+
+We're going to create a systemctl service that will be running always in our
+server. To do so, first we need to create a file under `/etc/systemd/system/`
+folder
+
+1. Create a file with your preffered name
+
+  ```sh
+  sudo touch /etc/systemd/system/valheim-odin.service
+  ```
+
+2. Edit the file with your preffered editor and put
+
+  ```sh
+  [Unit]
+  Description=Valheim Server Notifier
+  Wants=network-online.target
+  After=syslog.target network.target nss-lookup.target network-online.target
+
+  [Service]
+  Type=simple
+  Restart=on-failure
+  RestartSec=5
+  StartLimitInterval=1s
+  User=<your-username>
+  Group=<your-groupname>
+  ExecStart=/usr/bin/python3 /home/<your-username>/valheim-server-notifier/odin/main.py
+  EnvironmentFile=/home/<your-username>/valheim-server-notifier/.env
+  ExecReload=/bin/kill -s HUP $MAINPID
+  ExecStop=/bin/kill -s INT $MAINPID
+  LimitNOFILE=100000
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+> Remember to update the variables with proper ones for your own setup
+
+3. Enable the service in your server
+
+  ```sh
+  systemctl daemon-reload
+  systemctl start valheim-odin.service
+  systemctl enable valheim-odin.service
+  ```
+
+And that's it! Now the python script will be reading from Valheim server logs, waiting
+to post any event into Discord :D
+
+## Usage
+
+To run the script in local
+
+  ```sh
+  VALHEIM_LOG_PATH=<fill-with-your-log-file> DISCORD_WEBHOOK_URL=<fill-with-your-webhook-url> python3 odin/main.py
+  ```
+
+> Remember to add some envvars first
+
+To check the logs for systemctl service
+
+  ```sh
+  journalctl -u valheim-odin.service
+  ```
 
 <!-- ROADMAP -->
 
