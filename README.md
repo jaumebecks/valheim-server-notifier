@@ -233,6 +233,7 @@ Project Link: [https://github.com/jaumebecks/valheim-server-notifier](https://gi
 
 ## Acknowledgements
 
+- [@joselgomezs](https://github.com/joselgomezs) As an inspiration for the solution
 - [Reddit user `somekindofsorcery`](https://www.reddit.com/r/valheim/comments/n7vv9b/do_server_logs_have_things_like_deaths/)
 
 
