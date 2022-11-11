@@ -93,7 +93,7 @@ VALHEIM_LOG_PATH # Path to current server console log
 DISCORD_WEBHOOK_URL # Discord Webhook URL
 ```
 
-#### How to find server console log
+#### How to find server console log path
 
 It depends on how you configured your Valheim Server. For example, for LinuxGSM
 installations, it's located in `/home/<your-username>/log/console/vhserver-console.log`
@@ -199,6 +199,28 @@ To check the logs for systemctl service
   ```sh
   journalctl -u valheim-odin.service
   ```
+
+### Examples
+
+<table>
+  <tr>
+    <td><b>Server On</b></td>
+    <td><img src="images/serverOn-event.png" alt="server-on" width="290" height="130"></td>
+  </tr>
+  <tr>
+    <td><b>Server Off</b></td>
+    <td><img src="images/serverOff-event.png" alt="server-on" width="340" height="130"></td>
+  </tr>
+  <tr>
+    <td><b>Player Joined</b></td>
+    <td><img src="images/join-event.png" alt="server-on" width="350" height="140"></td>
+  </tr>
+  <tr>
+    <td><b>Player Died</b></td>
+    <td><img src="images/death-event.png" alt="server-on" width="350" height="140"></td>
+  </tr>
+</table>
+
 
 <!-- ROADMAP -->
 
